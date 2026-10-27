@@ -1,0 +1,204 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@300;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+
+/* ------------------------------------------------------------------ */
+/*  Hero — "Odaa Field"                                                */
+/*  Full-bleed instrument: hairlines only, no radii, no shadows,       */
+/*  no card fills. Tokens flip wholesale via [data-paper="light"].      */
+/* ------------------------------------------------------------------ */
+.hero {
+  --hero-ground: #050506;
+  --hero-ink: #ecece8;
+  --hero-dim: rgba(236, 236, 232, 0.64);
+  --hero-faint: rgba(236, 236, 232, 0.42);
+  --hero-hair: rgba(236, 236, 232, 0.17);
+  --hero-accent: #d98e32;
+  font-family: "Manrope", "Inter", system-ui, sans-serif;
+  font-weight: 300;
+  transition: background-color 0.6s ease;
+}
+
+.hero[data-paper="light"] {
+  --hero-ground: #f4f4f1;
+  --hero-ink: #101012;
+  --hero-dim: rgba(16, 16, 18, 0.66);
+  --hero-faint: rgba(16, 16, 18, 0.46);
+  --hero-hair: rgba(16, 16, 18, 0.19);
+  --hero-accent: #b26b1c;
+}
+
+.hero-micro {
+  font-size: 9px;
+  line-height: 1.6;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--hero-faint);
+  transition: color 0.6s ease;
+}
+@media (min-width: 768px) {
+  .hero-micro {
+    font-size: 10px;
+  }
+}
+
+.hero-num {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--hero-dim);
+  padding-bottom: 3px;
+  border-bottom: 1px solid transparent;
+  transition: color 0.35s ease, border-color 0.35s ease;
+}
+.hero-link:hover,
+.hero-link:focus-visible {
+  color: var(--hero-ink);
+  border-bottom-color: var(--hero-accent);
+  outline: none;
+}
+
+/* legibility scrims — they live *behind* the rails, above the field */
+.hero-scrim {
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(5, 5, 6, 0.78) 0%,
+      rgba(5, 5, 6, 0.34) 11%,
+      rgba(5, 5, 6, 0) 26%
+    ),
+    radial-gradient(115% 85% at 52% 40%, rgba(5, 5, 6, 0) 34%, rgba(5, 5, 6, 0.55) 100%),
+    linear-gradient(to top, rgba(5, 5, 6, 0.92) 0%, rgba(5, 5, 6, 0.35) 26%, rgba(5, 5, 6, 0) 55%);
+  transition: background 0.6s ease;
+}
+.hero[data-paper="light"] .hero-scrim {
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(244, 244, 241, 0.82) 0%,
+      rgba(244, 244, 241, 0.38) 11%,
+      rgba(244, 244, 241, 0) 26%
+    ),
+    radial-gradient(115% 85% at 52% 40%, rgba(244, 244, 241, 0) 36%, rgba(244, 244, 241, 0.5) 100%),
+    linear-gradient(to top, rgba(244, 244, 241, 0.94) 0%, rgba(244, 244, 241, 0.4) 26%, rgba(244, 244, 241, 0) 55%);
+}
+
+.hero-field canvas {
+  display: block;
+}
+.hero-field-fallback {
+  background-image: radial-gradient(circle at 1px 1px, var(--hero-hair) 1px, transparent 0);
+  background-size: 7px 7px;
+  opacity: 0.55;
+}
+
+/* hairline crosshair — inverted against whatever sits under it */
+.hero-cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  display: none;
+}
+.hero-cursor::before,
+.hero-cursor::after {
+  content: "";
+  position: absolute;
+  background: #fff;
+}
+.hero-cursor::before {
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  transform: translateX(-0.5px);
+}
+.hero-cursor::after {
+  top: 50%;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  transform: translateY(-0.5px);
+}
+@media (hover: hover) and (pointer: fine) {
+  .hero-cursor {
+    display: block;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .hero:hover .hero-cursor {
+    opacity: 1;
+  }
+}
+
+/* reveal */
+@keyframes heroRise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.hero-rise {
+  animation: heroRise 1s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.hero-rise-1 { animation-delay: 0.1s; }
+.hero-rise-2 { animation-delay: 0.2s; }
+.hero-rise-3 { animation-delay: 0.3s; }
+.hero-rise-4 { animation-delay: 0.4s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .hero,
+  .hero-micro,
+  .hero-scrim {
+    transition: none;
+  }
+}
+
+@tailwind utilities;
+
+body {
+  background: #0B0B0B;
+  color: #FFF8E7;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+h1,h2,h3 { font-family: 'Cormorant Garamond', serif; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #1a1a1a; }
+::-webkit-scrollbar-thumb { background: #D98E32; border-radius: 3px; }
+
+/* geometric pattern */
+.faajjii {
+  background-image: 
+    radial-gradient(circle at 1px 1px, rgba(217,142,50,0.15) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+.glow-ochre { box-shadow: 0 0 30px rgba(217,142,50,0.3), 0 0 60px rgba(217,142,50,0.1); }
+.glow-teal { box-shadow: 0 0 30px rgba(15,76,58,0.4); }
